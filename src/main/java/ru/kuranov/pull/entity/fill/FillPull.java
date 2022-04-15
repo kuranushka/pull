@@ -1,6 +1,8 @@
-package ru.kuranov.pull.entity;
+package ru.kuranov.pull.entity.fill;
 
 import lombok.*;
+import ru.kuranov.pull.entity.main.Item;
+import ru.kuranov.pull.entity.main.Pull;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -28,12 +30,12 @@ public class FillPull {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "pull_source_id")
-    private Long pullSourceId;
+    @Column(name = "source_pull_id")
+    private Long sourcePullId;
 
     @Column(name = "interviewer_id")
     private Long interviewerId;
 
     @OneToMany
-    private List<Item> items;
+    private List<FillItem> fillItems;
 }

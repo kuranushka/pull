@@ -1,4 +1,4 @@
-package ru.kuranov.pull.entity;
+package ru.kuranov.pull.entity.main;
 
 import lombok.*;
 

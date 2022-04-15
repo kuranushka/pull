@@ -3,7 +3,7 @@ package ru.kuranov.pull.mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.kuranov.pull.dto.PullDto;
-import ru.kuranov.pull.entity.Pull;
+import ru.kuranov.pull.entity.main.Pull;
 
 @Service
 @RequiredArgsConstructor

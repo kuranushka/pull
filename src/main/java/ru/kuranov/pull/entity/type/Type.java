@@ -1,4 +1,4 @@
-package ru.kuranov.pull.entity;
+package ru.kuranov.pull.entity.type;
 
 public enum Type {
     SIMPLE_STRING,

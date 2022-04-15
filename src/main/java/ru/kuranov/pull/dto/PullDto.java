@@ -2,7 +2,7 @@ package ru.kuranov.pull.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-import ru.kuranov.pull.entity.Item;
+import ru.kuranov.pull.entity.main.Item;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

@@ -2,8 +2,8 @@ package ru.kuranov.pull.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.kuranov.pull.entity.main.Item;
+import ru.kuranov.pull.entity.fill.FillItem;
 
 @Repository
-public interface ItemRepo extends JpaRepository<Item, Long> {
+public interface FillItemRepo extends JpaRepository<FillItem, Long> {
 }

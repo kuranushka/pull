@@ -1,6 +1,7 @@
-package ru.kuranov.pull.entity;
+package ru.kuranov.pull.entity.main;
 
 import lombok.*;
+import ru.kuranov.pull.entity.type.Type;
 
 import javax.persistence.*;
 import java.util.Map;

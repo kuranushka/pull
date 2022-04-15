@@ -66,12 +66,16 @@ public class PullController {
         pullService.deletePull(id);
     }
 
+    //TODO @Validated
     @PutMapping("/fill/{pullSourceId}")
     public ResponseEntity<?> saveFilledPull(@Validated @RequestBody FillPullDto fillPullDto,
                                             @PathVariable("pullSourceId") Long pullSourceId,
                                             @RequestParam(name = "interviewerId") Long interviewerId) {
         if (pullService.isActivePull(pullSourceId)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if (!fillPullService.isValidFillPull(fillPullDto, pullSourceId)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         fillPullService.saveFilledPull(fillPullDto, pullSourceId, interviewerId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -85,5 +89,6 @@ public class PullController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(fillPullDtoList, HttpStatus.OK);
+        //TODO rewrite
     }
 }

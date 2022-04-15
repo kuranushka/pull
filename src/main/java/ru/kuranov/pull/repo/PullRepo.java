@@ -2,7 +2,7 @@ package ru.kuranov.pull.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.kuranov.pull.entity.Pull;
+import ru.kuranov.pull.entity.main.Pull;
 
 import java.util.List;
 
