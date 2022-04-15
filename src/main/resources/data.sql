@@ -14,9 +14,19 @@ values ('Сколько часов в сутках', 'SIMPLE_STRING'),
        ('Столица Татарстана?', 'SINGLE_OPTION'),
        ('Выберите летние виды спорта', 'MULTI_OPTION');
 
+insert into item_answer (item_id, answer_key, answer)
+values (4, '11 часовых поясов', false),
+       (5, 'Казань', true),
+       (5, 'Набережные Челны', false),
+       (5, 'Уфа', false),
+       (6, 'Бадминтон', true),
+       (6, 'Воллейбол', true),
+       (6, 'Лыжные гонки', false),
+       (6, 'Биатлон', false);
+
 insert into pull (begin_date, description, end_date, is_active)
-values (current_timestamp, 'Активный опрос', '31-Dec-2022', true),
-       (current_timestamp, 'Не активный опрос', '31-Dec-2022', false);
+values (current_timestamp, 'Не активный опрос', '31-Dec-2022', false),
+       (current_timestamp, 'Активный опрос', '31-Dec-2022', true);
 
 insert into pull_items (pull_id, items_id)
 values (1, 1),

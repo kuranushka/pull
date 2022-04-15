@@ -1,5 +1,5 @@
 drop table if exists pull_items, pull, item_answer, item,
-    user_roles, usr, usr_pulls cascade;
+    user_roles, usr, usr_pulls, fill_pull, fill_pull_items cascade;
 
 create table item
 (
@@ -7,6 +7,27 @@ create table item
     question varchar(255),
     type     varchar(255)
 );
+
+create table fill_pull
+(
+    id          bigserial primary key,
+    begin_date     date,
+    description    varchar(255),
+    end_date       date,
+    pull_source_id bigint,
+    interviewer_id bigint
+);
+
+create table fill_pull_items
+(
+    fill_pull_id bigint not null
+        constraint fk_fill_pull_items_fill_pull_id
+            references fill_pull,
+    items_id          bigint not null
+        constraint uk_fill_pull_items_items_id
+            unique
+);
+
 
 create table pull
 (

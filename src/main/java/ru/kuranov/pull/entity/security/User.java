@@ -38,13 +38,6 @@ public class User implements UserDetails {
     @Column(name = "is_active")
     private boolean active;
 
-    @OneToMany
-    private List<Pull> pulls;
-
-    public boolean isAdmin() {
-        return roles.contains(Role.ADMIN);
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();

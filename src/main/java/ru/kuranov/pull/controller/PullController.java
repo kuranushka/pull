@@ -6,7 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.kuranov.pull.dto.FillPullDto;
 import ru.kuranov.pull.dto.PullDto;
+import ru.kuranov.pull.service.FillPullService;
 import ru.kuranov.pull.service.PullService;
 
 import java.net.URI;
@@ -19,6 +21,7 @@ import java.util.List;
 public class PullController {
 
     private final PullService pullService;
+    private final FillPullService fillPullService;
 
     @GetMapping
     public List<PullDto> getAllPull(Principal principal) {
@@ -47,10 +50,40 @@ public class PullController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updatePull(@Validated @RequestBody PullDto pullDto, @PathVariable("id") Long id) {
-        if (pullService.update(pullDto)) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<?> updatePull(@Validated @RequestBody PullDto pullDto,
+                                        @PathVariable("id") Long id) {
+        if (pullService.findById(id) == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        pullDto.setId(id);
+        pullService.update(pullDto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletePull(@PathVariable("id") Long id) {
+        pullService.deletePull(id);
+    }
+
+    @PutMapping("/fill/{pullSourceId}")
+    public ResponseEntity<?> saveFilledPull(@Validated @RequestBody FillPullDto fillPullDto,
+                                            @PathVariable("pullSourceId") Long pullSourceId,
+                                            @RequestParam(name = "interviewerId") Long interviewerId) {
+        if (pullService.isActivePull(pullSourceId)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        fillPullService.saveFilledPull(fillPullDto, pullSourceId, interviewerId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+
+    @GetMapping("/interviewer/{interviewerId}/fill-pull")
+    public ResponseEntity<List<FillPullDto>> getAllFilledPull(@PathVariable("interviewerId") Long interviewerId) {
+        List<FillPullDto> fillPullDtoList = fillPullService.findAllByInterviewerId(interviewerId);
+        if (fillPullDtoList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(fillPullDtoList, HttpStatus.OK);
     }
 }

@@ -14,5 +14,4 @@ public class ControllerExceptionHandler {
     ResponseEntity<?> validationElementErrorHandler(NoSuchElementException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
     }
-
 }
