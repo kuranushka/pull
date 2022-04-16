@@ -56,7 +56,10 @@ public class PullController {
     public ResponseEntity<?> updatePull(@Validated @RequestBody PullDto pullDto,
                                         @PathVariable("id") Long id) {
         if (pullService.findById(id) == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        if (pullDto.getItems() == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         pullDto.setId(id);
         pullService.update(pullDto);
@@ -71,10 +74,10 @@ public class PullController {
 
 
     @PutMapping("/fill/{pullSourceId}")
-    public ResponseEntity<?> saveFilledPull(@Validated @RequestBody FillPullDto fillPullDto,
-                                            @PathVariable("pullSourceId") Long pullSourceId,
-                                            @RequestParam(name = "interviewerId") Long interviewerId) {
-        if (pullService.isActivePull(pullSourceId)) {
+    public ResponseEntity<?> fillPull(@Validated @RequestBody FillPullDto fillPullDto,
+                                      @PathVariable("pullSourceId") Long pullSourceId,
+                                      @RequestParam(name = "interviewerId") Long interviewerId) {
+        if (!pullService.isActivePull(pullSourceId)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         if (!fillPullService.isValidFillPull(fillPullDto, pullSourceId)) {

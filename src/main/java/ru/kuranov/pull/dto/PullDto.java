@@ -6,6 +6,7 @@ import ru.kuranov.pull.entity.main.Item;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 

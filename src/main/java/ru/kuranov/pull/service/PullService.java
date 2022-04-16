@@ -62,7 +62,7 @@ public class PullService {
                 .map(item -> item.getType().name())
                 .collect(Collectors.toSet());
 
-        return types.stream().allMatch(type -> typeList.contains(type));
+        return typeList.containsAll(types);
     }
 
     public List<PullDto> findAllByIsActive() {

@@ -12,7 +12,6 @@ import ru.kuranov.pull.repo.PullRepo;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,15 +34,29 @@ public class FillPullService {
             return false;
         }
 
-        Set<String> fillPullSet = fillPullDto.getFillItems().stream()
+        List<String> fillPullListQuestion = fillPullDto.getFillItems().stream()
                 .map(fillItem -> fillItem.getAnswer().keySet())
                 .flatMap(Collection::stream)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
 
-        return pull.getItems().stream()
+
+        List<String> pullListQestion = pull.getItems().stream()
                 .map(item -> item.getAnswer().keySet())
                 .flatMap(Collection::stream)
-                .allMatch(fillPullSet::contains);
+                .collect(Collectors.toList());
+
+        List<String> fillPullTypeQuestion = fillPullDto.getFillItems().stream()
+                .map(item -> item.getType().name())
+                .collect(Collectors.toList());
+
+        List<String> pullTypeQuestion = pull.getItems().stream()
+                .map(item -> item.getType().name())
+                .collect(Collectors.toList());
+
+        return pullListQestion.containsAll(fillPullListQuestion) &&
+                pullTypeQuestion.containsAll(fillPullTypeQuestion) &&
+                fillPullListQuestion.containsAll(pullListQestion) &&
+                fillPullTypeQuestion.containsAll(pullTypeQuestion);
     }
 
     public void saveFilledPull(FillPullDto fillPullDto, Long pullSourceId, Long interviewerId) {

@@ -28,7 +28,7 @@ class PullControllerGetPullTest {
     ObjectMapper objectMapper;
 
     @Test
-    void userGetPull() throws Exception {
+    void userGetPullSuccess() throws Exception {
 
         mockMvc.perform(get(baseUrl + "/1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(forwardedUrl(null))
@@ -70,8 +70,18 @@ class PullControllerGetPullTest {
     }
 
     @Test
+    void userGetPullNoSuccess() throws Exception {
+
+        mockMvc.perform(get(baseUrl + "/20").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(forwardedUrl(null))
+                .andExpect(redirectedUrl(null))
+                .andExpect(status().isConflict());
+    }
+
+
+    @Test
     @WithMockUser(username = "admin", authorities = "ADMIN", password = "admin")
-    void adminGetPull() throws Exception {
+    void adminGetPullSuccess() throws Exception {
 
         mockMvc.perform(get(baseUrl + "/1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(forwardedUrl(null))
@@ -134,5 +144,15 @@ class PullControllerGetPullTest {
                 .andExpect(jsonPath("$.items[2].answer", hasEntry(is("Воллейбол"), is(true))))
                 .andExpect(jsonPath("$.items[2].answer", hasEntry(is("Биатлон"), is(false))))
                 .andExpect(jsonPath("$.items[2].answer", hasEntry(is("Бадминтон"), is(true))));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", authorities = "ADMIN", password = "admin")
+    void adminGetPullNoSuccess() throws Exception {
+
+        mockMvc.perform(get(baseUrl + "/20").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(forwardedUrl(null))
+                .andExpect(redirectedUrl(null))
+                .andExpect(status().isConflict());
     }
 }
