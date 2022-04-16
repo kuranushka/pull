@@ -3,16 +3,19 @@ package ru.kuranov.pull.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kuranov.pull.dto.FillPullDto;
 import ru.kuranov.pull.dto.PullDto;
+import ru.kuranov.pull.entity.main.Item;
 import ru.kuranov.pull.entity.main.Pull;
+import ru.kuranov.pull.entity.type.Type;
 import ru.kuranov.pull.mapper.PullMapper;
 import ru.kuranov.pull.repo.ItemRepo;
 import ru.kuranov.pull.repo.PullRepo;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,11 +34,35 @@ public class PullService {
 
     @Transactional
     public PullDto save(PullDto pullDto) {
-        itemRepo.saveAll(pullDto.getItems());
+        List<Item> itemsWithOutId = deleteItemId(pullDto.getItems());
+        itemRepo.saveAll(itemsWithOutId);
         Pull pull = pullMapper.getPull(pullDto);
+        pull.setItems(itemsWithOutId);
         pullRepo.save(pull);
         return pullMapper.getPullDto(pull);
 
+    }
+
+    private List<Item> deleteItemId(List<Item> items) {
+        return items.stream()
+                .map(item -> Item.builder()
+                        .question(item.getQuestion())
+                        .type(item.getType())
+                        .answer(item.getAnswer())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    public boolean isValidItem(List<Item> items) {
+        List<String> typeList = Arrays.stream(Type.values())
+                .map(Enum::name)
+                .collect(Collectors.toList());
+
+        Set<String> types = items.stream()
+                .map(item -> item.getType().name())
+                .collect(Collectors.toSet());
+
+        return types.stream().allMatch(type -> typeList.contains(type));
     }
 
     public List<PullDto> findAllByIsActive() {

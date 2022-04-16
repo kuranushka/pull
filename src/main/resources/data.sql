@@ -36,15 +36,11 @@ values (1, 1),
 
 insert into fill_pull (begin_date, description, end_date, interviewer_id, source_pull_id)
 values (current_timestamp, 'Первый заполненный опрос', current_timestamp, 1, 1);
---        (current_timestamp, 'Второй заполненный опрос', current_timestamp, 1, 2);
 
 insert into fill_item (question, type)
 values ('Сколько часов в сутках?', 'SIMPLE_STRING'),
        ('Столица Татарстана?', 'SINGLE_OPTION'),
        ('Выберите зимние виды спорта?', 'MULTI_OPTION');
---        ('Сколько в России часовых поясов?', 'SIMPLE_STRING'),
---        ('Столица Индии?', 'SINGLE_OPTION'),
---        ('Выберите летние виды спорта?', 'MULTI_OPTION');
 
 insert into fill_item_answer (fill_item_id, answer, answer_key)
 values (1, false, '24 часа'),
@@ -56,19 +52,7 @@ values (1, false, '24 часа'),
        (3, true, 'Лыжные гонки'),
        (3, true, 'Биатлон');
 
---        (4, false, '11 часовых поясов'),
---        (5, true, 'Дели'),
---        (5, false, 'Кабул'),
---        (5, false, 'Калькутта'),
---        (6, true, 'Велоспорт'),
---        (6, true, 'Баскетбол'),
---        (6, false, 'Фристайл'),
---        (6, false, 'Санный спорт');
-
 insert into fill_pull_fill_items (fill_pull_id, fill_items_id)
 values (1, 1),
        (1, 2),
        (1, 3);
---        (2, 4),
---        (2, 5),
---        (2, 6);

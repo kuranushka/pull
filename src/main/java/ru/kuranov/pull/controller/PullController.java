@@ -43,6 +43,9 @@ public class PullController {
 
     @PostMapping
     public ResponseEntity<?> createPull(@Validated @RequestBody PullDto pullDto) {
+        if (!pullService.isValidItem(pullDto.getItems())) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         PullDto savedPullDto = pullService.save(pullDto);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(URI.create("/api/v1/pulls/" + savedPullDto.getId()));
@@ -66,7 +69,7 @@ public class PullController {
         pullService.deletePull(id);
     }
 
-    //TODO @Validated
+
     @PutMapping("/fill/{pullSourceId}")
     public ResponseEntity<?> saveFilledPull(@Validated @RequestBody FillPullDto fillPullDto,
                                             @PathVariable("pullSourceId") Long pullSourceId,
@@ -89,6 +92,5 @@ public class PullController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(fillPullDtoList, HttpStatus.OK);
-        //TODO rewrite
     }
 }
