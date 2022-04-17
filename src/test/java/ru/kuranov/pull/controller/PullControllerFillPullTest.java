@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@Sql(scripts = "/test.sql", config = @SqlConfig(encoding = "utf-8", transactionMode = SqlConfig.TransactionMode.ISOLATED))
+@Sql(scripts = "/test.sql", config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
 class PullControllerFillPullTest {
 
     String baseUrl = "/api/v1/pulls/fill";
@@ -47,7 +47,7 @@ class PullControllerFillPullTest {
                         .content(objectMapper.writeValueAsString(FillPullDto.builder()
                                 .beginDate(LocalDate.of(2022, 1, 1))
                                 .endDate(LocalDate.of(2022, 12, 31))
-                                .description("Заполненный пользователем опрос")
+                                .description("User-filled survey")
                                 .sourcePullId(2L)
                                 .fillItems(fillItems)
                                 .build()))
@@ -69,7 +69,7 @@ class PullControllerFillPullTest {
                         .content(objectMapper.writeValueAsString(FillPullDto.builder()
                                 .beginDate(LocalDate.of(2022, 1, 1))
                                 .endDate(LocalDate.of(2022, 12, 31))
-                                .description("Заполненный пользователем опрос")
+                                .description("User-filled survey")
                                 .sourcePullId(2L)
                                 .fillItems(validFillItems)
                                 .build())))
@@ -82,7 +82,7 @@ class PullControllerFillPullTest {
                         .content(objectMapper.writeValueAsString(FillPullDto.builder()
                                 .beginDate(LocalDate.of(2022, 1, 1))
                                 .endDate(LocalDate.of(2022, 12, 31))
-                                .description("Заполненный пользователем опрос")
+                                .description("User-filled survey")
                                 .sourcePullId(2L)
                                 .fillItems(validFillItems)
                                 .build()))
@@ -96,7 +96,7 @@ class PullControllerFillPullTest {
                         .content(objectMapper.writeValueAsString(FillPullDto.builder()
                                 .beginDate(LocalDate.of(2022, 1, 1))
                                 .endDate(LocalDate.of(2022, 12, 31))
-                                .description("Заполненный пользователем опрос")
+                                .description("User-filled survey")
                                 .sourcePullId(2L)
                                 .fillItems(validFillItems)
                                 .build()))
@@ -112,7 +112,7 @@ class PullControllerFillPullTest {
                         .content(objectMapper.writeValueAsString(FillPullDto.builder()
                                 .beginDate(LocalDate.of(2022, 1, 1))
                                 .endDate(LocalDate.of(2022, 12, 31))
-                                .description("Заполненный пользователем опрос")
+                                .description("User-filled survey")
                                 .sourcePullId(2L)
                                 .fillItems(notValidFillItemsToManyItems)
                                 .build()))
@@ -128,7 +128,7 @@ class PullControllerFillPullTest {
                         .content(objectMapper.writeValueAsString(FillPullDto.builder()
                                 .beginDate(LocalDate.of(2022, 1, 1))
                                 .endDate(LocalDate.of(2022, 12, 31))
-                                .description("Заполненный пользователем опрос")
+                                .description("User-filled survey")
                                 .sourcePullId(2L)
                                 .fillItems(notValidFillItemsAnotherTypeItems)
                                 .build()))
@@ -142,22 +142,22 @@ class PullControllerFillPullTest {
     private List<FillItem> generateValidFillItems() {
         FillItem fillItem1 = FillItem.builder()
                 .id(1L)
-                .question("Сколько часовых поясов В России?")
+                .question("How many time zones are there in Russia?")
                 .type(Type.SIMPLE_STRING)
-                .answer(Map.of("11 часовых поясов", false))
+                .answer(Map.of("11 time zones", false))
                 .build();
 
         FillItem fillItem2 = FillItem.builder()
-                .question("Столица Татарстана?")
+                .question("Capital of Tatarstan?")
                 .type(Type.SINGLE_OPTION)
-                .answer(Map.of("Казань", true, "Набережные Челны", false, "Уфа", false))
+                .answer(Map.of("Kazan", true, "Naberezhnye Chelny", false, "Ufa", false))
                 .build();
 
         FillItem fillItem3 = FillItem.builder()
                 .id(1L)
-                .question("Выберите летние виды спорта")
+                .question("Choose summer sports")
                 .type(Type.MULTI_OPTION)
-                .answer(Map.of("Бадминтон", true, "Воллейбол", true, "Лыжные гонки", false, "Биатлон", false))
+                .answer(Map.of("Badminton", true, "Volleyball", true, "Ski race", false, "Biathlon", false))
                 .build();
         return List.of(fillItem1, fillItem2, fillItem3);
     }
@@ -166,22 +166,22 @@ class PullControllerFillPullTest {
     private List<FillItem> generateNotValidFillItemsAnotherTypeItems() {
         FillItem fillItem1 = FillItem.builder()
                 .id(1L)
-                .question("Сколько часовых поясов В России?")
+                .question("How many time zones are there in Russia?")
                 .type(Type.SIMPLE_STRING)
-                .answer(Map.of("11 часовых поясов", false))
+                .answer(Map.of("11 time zones", false))
                 .build();
 
         FillItem fillItem2 = FillItem.builder()
-                .question("Столица Татарстана?")
+                .question("Capital of Tatarstan?")
                 .type(Type.MULTI_OPTION)
-                .answer(Map.of("Казань", true, "Набережные Челны", false, "Уфа", false))
+                .answer(Map.of("Kazan", true, "Naberezhnye Chelny", false, "Ufa", false))
                 .build();
 
         FillItem fillItem3 = FillItem.builder()
                 .id(1L)
-                .question("Выберите летние виды спорта")
+                .question("Choose summer sports")
                 .type(Type.MULTI_OPTION)
-                .answer(Map.of("Бадминтон", true, "Воллейбол", true, "Лыжные гонки", false, "Биатлон", false))
+                .answer(Map.of("Badminton", true, "Volleyball", true, "Ski race", false, "Biathlon", false))
                 .build();
         return List.of(fillItem1, fillItem2, fillItem3);
     }
@@ -190,29 +190,29 @@ class PullControllerFillPullTest {
     private List<FillItem> generateNotValidFillItemsToManyItems() {
         FillItem fillItem1 = FillItem.builder()
                 .id(1L)
-                .question("Сколько часовых поясов В России?")
+                .question("How many time zones are there in Russia?")
                 .type(Type.SIMPLE_STRING)
-                .answer(Map.of("11 часовых поясов", false))
+                .answer(Map.of("11 time zones", false))
                 .build();
 
         FillItem fillItem2 = FillItem.builder()
-                .question("Столица Татарстана?")
+                .question("Capital of Tatarstan?")
                 .type(Type.SINGLE_OPTION)
-                .answer(Map.of("Казань", true, "Набережные Челны", false, "Уфа", false))
+                .answer(Map.of("Kazan", true, "Naberezhnye Chelny", false, "Ufa", false))
                 .build();
 
         FillItem fillItem3 = FillItem.builder()
                 .id(1L)
-                .question("Выберите летние виды спорта")
+                .question("Choose summer sports")
                 .type(Type.MULTI_OPTION)
-                .answer(Map.of("Бадминтон", true, "Воллейбол", true, "Лыжные гонки", false, "Биатлон", false))
+                .answer(Map.of("Badminton", true, "Volleyball", true, "Ski race", false, "Biathlon", false))
                 .build();
 
         FillItem fillItem4 = FillItem.builder()
                 .id(1L)
-                .question("Выберите летние виды спорта")
+                .question("Choose summer sports")
                 .type(Type.MULTI_OPTION)
-                .answer(Map.of("Бадминтон", true, "Воллейбол", true, "Лыжные гонки", false, "Биатлон", false))
+                .answer(Map.of("Badminton", true, "Volleyball", true, "Ski race", false, "Biathlon", false))
                 .build();
 
         return List.of(fillItem1, fillItem2, fillItem3, fillItem4);

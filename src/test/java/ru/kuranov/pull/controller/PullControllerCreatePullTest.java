@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@Sql(scripts = "/test.sql", config = @SqlConfig(encoding = "utf-8", transactionMode = SqlConfig.TransactionMode.ISOLATED))
+@Sql(scripts = "/test.sql", config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
 class PullControllerCreatePullTest {
 
     String baseUrl = "/api/v1/pulls";
@@ -54,17 +54,17 @@ class PullControllerCreatePullTest {
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
 
         Item item1 = Item.builder()
-                .question("Где зимует медведь?")
+                .question("Where the bear hibernates?")
                 .type(Type.SIMPLE_STRING)
                 .build();
 
         Item item2 = Item.builder()
-                .question("Что в горбах у верблюда?")
+                .question("What's in a camel's humps?")
                 .type(Type.SINGLE_OPTION)
                 .build();
 
         Item item3 = Item.builder()
-                .question("Выберите родственников домашней кошки?")
+                .question("Choose relatives of a domestic cat?")
                 .type(Type.MULTI_OPTION)
                 .build();
 
@@ -75,7 +75,7 @@ class PullControllerCreatePullTest {
                         .content(objectMapper.writeValueAsString(PullDto.builder()
                                 .beginDate(LocalDate.of(2022, 1, 1))
                                 .endDate(LocalDate.of(2022, 12, 31))
-                                .description("Опрос из трёх вопросов для тестов")
+                                .description("Three-question survey for tests")
                                 .isActive(true)
                                 .items(items)
                                 .build())))
@@ -92,23 +92,23 @@ class PullControllerCreatePullTest {
                 .andExpect(jsonPath("$.id").value(3))
                 .andExpect(jsonPath("$.beginDate").value("01.01.2022"))
                 .andExpect(jsonPath("$.endDate").value("31.12.2022"))
-                .andExpect(jsonPath("$.description").value("Опрос из трёх вопросов для тестов"))
+                .andExpect(jsonPath("$.description").value("Three-question survey for tests"))
                 .andExpect(jsonPath("$.isActive").value(is(true)))
 
                 .andExpect(jsonPath("$.items", hasSize(3)))
 
                 .andExpect(jsonPath("$.items[0].id").value(7))
-                .andExpect(jsonPath("$.items[0].question").value("Где зимует медведь?"))
+                .andExpect(jsonPath("$.items[0].question").value("Where the bear hibernates?"))
                 .andExpect(jsonPath("$.items[0].type").value("SIMPLE_STRING"))
                 .andExpect(jsonPath("$.items[0].answer").isEmpty())
 
                 .andExpect(jsonPath("$.items[1].id").value(8))
-                .andExpect(jsonPath("$.items[1].question").value("Что в горбах у верблюда?"))
+                .andExpect(jsonPath("$.items[1].question").value("What's in a camel's humps?"))
                 .andExpect(jsonPath("$.items[1].type").value("SINGLE_OPTION"))
                 .andExpect(jsonPath("$.items[1].answer").isEmpty())
 
                 .andExpect(jsonPath("$.items[2].id").value(9))
-                .andExpect(jsonPath("$.items[2].question").value("Выберите родственников домашней кошки?"))
+                .andExpect(jsonPath("$.items[2].question").value("Choose relatives of a domestic cat?"))
                 .andExpect(jsonPath("$.items[2].type").value("MULTI_OPTION"))
                 .andExpect(jsonPath("$.items[2].answer").isEmpty());
 
@@ -125,7 +125,7 @@ class PullControllerCreatePullTest {
                         .content(objectMapper.writeValueAsString(PullDto.builder()
                                 .beginDate(LocalDate.of(2022, 1, 1))
                                 .endDate(LocalDate.of(2022, 12, 31))
-                                .description("Опрос из трёх вопросов для тестов")
+                                .description("Three-question survey for tests")
                                 .isActive(true)
                                 .build())))
                 .andExpect(forwardedUrl(null))

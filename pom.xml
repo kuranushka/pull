@@ -14,6 +14,8 @@
     <name>pull</name>
     <description>pull</description>
     <properties>
+<!--        <project.build.sourceEncoding>cp1251</project.build.sourceEncoding>-->
+<!--        <project.reporting.outputEncoding>cp1251</project.reporting.outputEncoding>-->
         <java.version>11</java.version>
     </properties>
     <dependencies>
@@ -56,6 +58,7 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
