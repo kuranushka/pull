@@ -14,8 +14,6 @@
     <name>pull</name>
     <description>pull</description>
     <properties>
-<!--        <project.build.sourceEncoding>cp1251</project.build.sourceEncoding>-->
-<!--        <project.reporting.outputEncoding>cp1251</project.reporting.outputEncoding>-->
         <java.version>11</java.version>
     </properties>
     <dependencies>
@@ -60,8 +58,22 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.6.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.6.7</version>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>1.5.21</version>
+        </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -78,5 +90,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

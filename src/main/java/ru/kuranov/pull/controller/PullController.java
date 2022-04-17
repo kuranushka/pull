@@ -1,5 +1,10 @@
 package ru.kuranov.pull.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,6 +18,7 @@ import ru.kuranov.pull.service.PullService;
 
 import java.net.URI;
 import java.security.Principal;
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -23,14 +29,20 @@ public class PullController {
     private final PullService pullService;
     private final FillPullService fillPullService;
 
+    @Operation(description = "Полуение списка всех опросов. Не авторизованный пользователь получает только активные опросы. Администратор весть список")
     @GetMapping
-    public List<PullDto> getAllPull(Principal principal) {
+    public Collection<PullDto> getAllPull(Principal principal) {
         if (principal == null) {
             return pullService.findAllByIsActive();
         }
         return pullService.findAll();
     }
 
+    @Operation(description = "Получение одного опроса с идентификатором :id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Найденный опрос", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = PullDto.class))}),
+            @ApiResponse(responseCode = "204", description = "Данный опрос не активен", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Опрос не найден", content = @Content)})
     @GetMapping("/{id}")
     public ResponseEntity<?> getPull(Principal principal,
                                      @PathVariable("id") Long id) {
@@ -41,6 +53,7 @@ public class PullController {
         return new ResponseEntity<>(pullDto, HttpStatus.OK);
     }
 
+    @Operation(description = "Создание нового опроса метод доступен Администратору системы")
     @PostMapping
     public ResponseEntity<?> createPull(@Validated @RequestBody PullDto pullDto) {
         if (!pullService.isValidItem(pullDto.getItems())) {
@@ -52,6 +65,7 @@ public class PullController {
         return new ResponseEntity<>(httpHeaders, HttpStatus.CREATED);
     }
 
+    @Operation(description = "Изменение существующего опроса с идентификатором :id, метод доступен Администратору системы")
     @PutMapping("/{id}")
     public ResponseEntity<?> updatePull(@Validated @RequestBody PullDto pullDto,
                                         @PathVariable("id") Long id) {
@@ -66,6 +80,7 @@ public class PullController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @Operation(description = "Удаление существующего опроса с идентификатором :id, метод доступен Администратору системы")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePull(@PathVariable("id") Long id) {
@@ -73,6 +88,7 @@ public class PullController {
     }
 
 
+    @Operation(description = "Заполнение пользователем существующего. активного опроса с идентификатором :pullSourceId, также в параметрах необходимо передать идентификатор пользователя :interviewerId")
     @PutMapping("/fill/{pullSourceId}")
     public ResponseEntity<?> fillPull(@Validated @RequestBody FillPullDto fillPullDto,
                                       @PathVariable("pullSourceId") Long pullSourceId,
@@ -87,7 +103,7 @@ public class PullController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-
+    @Operation(description = "Получение списка опросов пользовател :interviewerId")
     @GetMapping("/interviewer/{interviewerId}/fill-pull")
     public ResponseEntity<List<FillPullDto>> getAllFilledPull(@PathVariable("interviewerId") Long interviewerId) {
         List<FillPullDto> fillPullDtoList = fillPullService.findAllByInterviewerId(interviewerId);

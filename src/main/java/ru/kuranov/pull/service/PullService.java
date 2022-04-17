@@ -7,6 +7,7 @@ import ru.kuranov.pull.dto.PullDto;
 import ru.kuranov.pull.entity.main.Item;
 import ru.kuranov.pull.entity.main.Pull;
 import ru.kuranov.pull.entity.type.Type;
+import ru.kuranov.pull.exception.NoSuchPullException;
 import ru.kuranov.pull.mapper.PullMapper;
 import ru.kuranov.pull.repo.ItemRepo;
 import ru.kuranov.pull.repo.PullRepo;
@@ -73,7 +74,7 @@ public class PullService {
 
     public PullDto findById(Long id) {
         Optional<Pull> optionalPull = pullRepo.findById(id);
-        return pullMapper.getPullDto(optionalPull.orElseThrow());
+        return pullMapper.getPullDto(optionalPull.orElseThrow(NoSuchPullException::new));
     }
 
     @Transactional

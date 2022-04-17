@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import ru.kuranov.pull.service.UserService;
 
 
@@ -29,8 +30,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     requests.antMatchers("/**").permitAll();
                 }
         );
-
-//        http.authorizeRequests((requests) -> ((ExpressionUrlAuthorizationConfigurer.AuthorizedUrl) requests.anyRequest()).authenticated());
         http.formLogin();
         http.logout();
         http.httpBasic();
@@ -42,4 +41,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userService)
                 .passwordEncoder(passwordEncoder);
     }
+
+
 }
