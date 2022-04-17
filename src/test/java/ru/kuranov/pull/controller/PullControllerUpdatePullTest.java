@@ -148,7 +148,7 @@ class PullControllerUpdatePullTest {
                                 .build())))
                 .andExpect(forwardedUrl(null))
                 .andExpect(redirectedUrl(null))
-                .andExpect(status().isConflict());
+                .andExpect(status().isNotFound());
 
         mockMvc.perform(put(baseUrl + "/2")
                         .contentType(MediaType.APPLICATION_JSON)

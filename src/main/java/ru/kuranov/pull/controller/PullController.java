@@ -30,6 +30,8 @@ public class PullController {
     private final FillPullService fillPullService;
 
     @Operation(description = "Полуение списка всех опросов. Не авторизованный пользователь получает только активные опросы. Администратор весть список")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Список всех опросов", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = PullDto.class))})})
     @GetMapping
     public Collection<PullDto> getAllPull(Principal principal) {
         if (principal == null) {
@@ -54,6 +56,10 @@ public class PullController {
     }
 
     @Operation(description = "Создание нового опроса метод доступен Администратору системы")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Создан новый опрос", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Опрос не создан, request не соответсвует формату", content = @Content)})
     @PostMapping
     public ResponseEntity<?> createPull(@Validated @RequestBody PullDto pullDto) {
         if (!pullService.isValidItem(pullDto.getItems())) {
@@ -66,6 +72,12 @@ public class PullController {
     }
 
     @Operation(description = "Изменение существующего опроса с идентификатором :id, метод доступен Администратору системы")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Опрос изменен", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Request не соответсвует формату", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Опрос не найден", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Опрос не изменен, request не соответсвует формату", content = @Content)})
     @PutMapping("/{id}")
     public ResponseEntity<?> updatePull(@Validated @RequestBody PullDto pullDto,
                                         @PathVariable("id") Long id) {
@@ -81,6 +93,10 @@ public class PullController {
     }
 
     @Operation(description = "Удаление существующего опроса с идентификатором :id, метод доступен Администратору системы")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Опрос удален", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Опрос не найден", content = @Content)})
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePull(@PathVariable("id") Long id) {
@@ -89,6 +105,11 @@ public class PullController {
 
 
     @Operation(description = "Заполнение пользователем существующего. активного опроса с идентификатором :pullSourceId, также в параметрах необходимо передать идентификатор пользователя :interviewerId")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Опрос записан", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Request не соответсвует формату", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Опрос не найден", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Опрос не изменен, request не соответсвует формату", content = @Content)})
     @PutMapping("/fill/{pullSourceId}")
     public ResponseEntity<?> fillPull(@Validated @RequestBody FillPullDto fillPullDto,
                                       @PathVariable("pullSourceId") Long pullSourceId,
@@ -104,6 +125,8 @@ public class PullController {
     }
 
     @Operation(description = "Получение списка опросов пользовател :interviewerId")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Список всех опросов пользователя", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = FillPullDto.class))})})
     @GetMapping("/interviewer/{interviewerId}/fill-pull")
     public ResponseEntity<List<FillPullDto>> getAllFilledPull(@PathVariable("interviewerId") Long interviewerId) {
         List<FillPullDto> fillPullDtoList = fillPullService.findAllByInterviewerId(interviewerId);

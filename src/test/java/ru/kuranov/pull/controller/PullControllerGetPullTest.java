@@ -76,7 +76,7 @@ class PullControllerGetPullTest {
         mockMvc.perform(get(baseUrl + "/20").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(forwardedUrl(null))
                 .andExpect(redirectedUrl(null))
-                .andExpect(status().isConflict());
+                .andExpect(status().isNotFound());
     }
 
 
@@ -154,6 +154,6 @@ class PullControllerGetPullTest {
         mockMvc.perform(get(baseUrl + "/20").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(forwardedUrl(null))
                 .andExpect(redirectedUrl(null))
-                .andExpect(status().isConflict());
+                .andExpect(status().isNotFound());
     }
 }
