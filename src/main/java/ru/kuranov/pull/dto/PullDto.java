@@ -25,12 +25,10 @@ public class PullDto {
     @JsonFormat(pattern = "dd.MM.yyyy")
     private LocalDate endDate;
 
-    @NotBlank
     private String description;
 
     private Boolean isActive;
 
-    @NotNull
     private List<Item> items;
 
 }

@@ -8,6 +8,7 @@ import ru.kuranov.pull.entity.main.Item;
 import ru.kuranov.pull.entity.main.Pull;
 import ru.kuranov.pull.entity.type.Type;
 import ru.kuranov.pull.exception.NoSuchPullException;
+import ru.kuranov.pull.exception.QuestionTypesNotSupported;
 import ru.kuranov.pull.mapper.PullMapper;
 import ru.kuranov.pull.repo.ItemRepo;
 import ru.kuranov.pull.repo.PullRepo;
@@ -63,7 +64,12 @@ public class PullService {
                 .map(item -> item.getType().name())
                 .collect(Collectors.toSet());
 
-        return typeList.containsAll(types);
+        boolean result = typeList.containsAll(types);
+        if (!result) {
+            throw new QuestionTypesNotSupported();
+        } else {
+            return true;
+        }
     }
 
     public List<PullDto> findAllByIsActive() {
@@ -82,7 +88,16 @@ public class PullService {
         Optional<Pull> optionalPull = pullRepo.findById(pullDto.getId());
         LocalDate beginDale = optionalPull.get().getBeginDate();
         pullDto.setBeginDate(beginDale);
-        itemRepo.saveAll(pullDto.getItems());
+
+        List<Item> unSavedItems = pullDto.getItems().stream().map(item -> Item.builder()
+                        .question(item.getQuestion())
+                        .type(item.getType())
+                        .answer(item.getAnswer())
+                        .build())
+                .collect(Collectors.toList());
+        itemRepo.saveAll(unSavedItems);
+        pullDto.setItems(unSavedItems);
+
         pullRepo.save(pullMapper.getPull(pullDto));
     }
 
