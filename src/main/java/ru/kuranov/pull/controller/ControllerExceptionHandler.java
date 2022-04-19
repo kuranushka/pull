@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.kuranov.pull.exception.NoSuchPullException;
 import ru.kuranov.pull.exception.NumberOfItemsInPullDoesNotMatchException;
 import ru.kuranov.pull.exception.PollWithThisIdIsNotActiveException;
+import ru.kuranov.pull.exception.SingleOptionContainsMoreThanOneTrueAnswerException;
 
 import java.util.NoSuchElementException;
 
@@ -37,6 +38,11 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(NumberOfItemsInPullDoesNotMatchException.class)
     ResponseEntity<?> validationElementErrorHandler(NumberOfItemsInPullDoesNotMatchException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(SingleOptionContainsMoreThanOneTrueAnswerException.class)
+    ResponseEntity<?> validationElementErrorHandler(SingleOptionContainsMoreThanOneTrueAnswerException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

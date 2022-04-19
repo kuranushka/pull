@@ -3,15 +3,17 @@ package ru.kuranov.pull.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.kuranov.pull.dto.FillPullDto;
+import ru.kuranov.pull.entity.fill.FillItem;
 import ru.kuranov.pull.entity.fill.FillPull;
 import ru.kuranov.pull.entity.main.Pull;
+import ru.kuranov.pull.entity.type.Type;
 import ru.kuranov.pull.exception.NumberOfItemsInPullDoesNotMatchException;
+import ru.kuranov.pull.exception.SingleOptionContainsMoreThanOneTrueAnswerException;
 import ru.kuranov.pull.mapper.FillPullMapper;
 import ru.kuranov.pull.repo.FillItemRepo;
 import ru.kuranov.pull.repo.FillPullRepo;
 import ru.kuranov.pull.repo.PullRepo;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +36,16 @@ public class FillPullService {
         boolean isEqualsItemCount = pullItemsSize == fillPullItemsSize;
         if (!isEqualsItemCount) {
             throw new NumberOfItemsInPullDoesNotMatchException();
+        }
+        for (FillItem fillItem : fillPullDto.getFillItems()) {
+            if (fillItem.getType().equals(Type.SINGLE_OPTION)) {
+                List<Boolean> listValues = fillItem.getAnswer().values().stream()
+                        .filter(value -> value.equals(true))
+                        .collect(Collectors.toList());
+                if (listValues.size() > 1) {
+                    throw new SingleOptionContainsMoreThanOneTrueAnswerException();
+                }
+            }
         }
         return pullItemsSize == fillPullItemsSize;
     }
