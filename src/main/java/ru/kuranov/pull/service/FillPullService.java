@@ -5,10 +5,10 @@ import org.springframework.stereotype.Service;
 import ru.kuranov.pull.dto.FillPullDto;
 import ru.kuranov.pull.entity.fill.FillItem;
 import ru.kuranov.pull.entity.fill.FillPull;
+import ru.kuranov.pull.entity.main.Item;
 import ru.kuranov.pull.entity.main.Pull;
 import ru.kuranov.pull.entity.type.Type;
-import ru.kuranov.pull.exception.NumberOfItemsInPullDoesNotMatchException;
-import ru.kuranov.pull.exception.SingleOptionContainsMoreThanOneTrueAnswerException;
+import ru.kuranov.pull.exception.*;
 import ru.kuranov.pull.mapper.FillPullMapper;
 import ru.kuranov.pull.repo.FillItemRepo;
 import ru.kuranov.pull.repo.FillPullRepo;
@@ -37,17 +37,35 @@ public class FillPullService {
         if (!isEqualsItemCount) {
             throw new NumberOfItemsInPullDoesNotMatchException();
         }
+
         for (FillItem fillItem : fillPullDto.getFillItems()) {
-            if (fillItem.getType().equals(Type.SINGLE_OPTION)) {
-                List<Boolean> listValues = fillItem.getAnswer().values().stream()
-                        .filter(value -> value.equals(true))
-                        .collect(Collectors.toList());
-                if (listValues.size() > 1) {
-                    throw new SingleOptionContainsMoreThanOneTrueAnswerException();
+            for (Item item : pull.getItems()) {
+                if (fillItem.getQuestion().equals(item.getQuestion())) {
+                    if (!fillItem.getType().equals(item.getType())) {
+                        throw new QuestionTypesDoNotMatchInPullException();
+                    }
+                    if (fillItem.getType().equals(Type.SIMPLE_STRING)) {
+                        if (fillItem.getAnswer() == null) {
+                            throw new SimpleStringAnswerIsEmptyException();
+                        }
+                    }
+                    if (fillItem.getType().equals(Type.SINGLE_OPTION)) {
+                        List<Boolean> listValues = fillItem.getAnswer().values().stream()
+                                .filter(value -> value.equals(true))
+                                .collect(Collectors.toList());
+                        if (listValues.size() != 1) {
+                            throw new SingleOptionContainAnswerException();
+                        }
+                    }
+                    if (fillItem.getType().equals(Type.MULTI_OPTION)) {
+                        if (!fillItem.getAnswer().values().contains(true)) {
+                            throw new MultiOptionAnswerDoesNotContainAnySelectedOptionException();
+                        }
+                    }
                 }
             }
         }
-        return pullItemsSize == fillPullItemsSize;
+        return true;
     }
 
     public void saveFilledPull(FillPullDto fillPullDto, Long pullSourceId, Long interviewerId) {

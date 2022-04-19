@@ -72,13 +72,6 @@ class PullControllerGetAllFillPullTest {
                 .andExpect(forwardedUrl(null))
                 .andExpect(redirectedUrl(null))
                 .andExpect(status().isNoContent());
-
-        mockMvc.perform(get(baseUrl + "/interviewer/2/fill-pull")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(forwardedUrl(null))
-                .andExpect(redirectedUrl(null))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)));
     }
 
     private List<FillItem> generateValidFillItems() {

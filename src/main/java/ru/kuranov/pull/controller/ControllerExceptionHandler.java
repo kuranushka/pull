@@ -6,10 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import ru.kuranov.pull.exception.NoSuchPullException;
-import ru.kuranov.pull.exception.NumberOfItemsInPullDoesNotMatchException;
-import ru.kuranov.pull.exception.PollWithThisIdIsNotActiveException;
-import ru.kuranov.pull.exception.SingleOptionContainsMoreThanOneTrueAnswerException;
+import ru.kuranov.pull.exception.*;
 
 import java.util.NoSuchElementException;
 
@@ -41,8 +38,24 @@ public class ControllerExceptionHandler {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(SingleOptionContainsMoreThanOneTrueAnswerException.class)
-    ResponseEntity<?> validationElementErrorHandler(SingleOptionContainsMoreThanOneTrueAnswerException e) {
+    @ExceptionHandler(SingleOptionContainAnswerException.class)
+    ResponseEntity<?> validationElementErrorHandler(SingleOptionContainAnswerException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(QuestionTypesDoNotMatchInPullException.class)
+    ResponseEntity<?> validationElementErrorHandler(QuestionTypesDoNotMatchInPullException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(SimpleStringAnswerIsEmptyException.class)
+    ResponseEntity<?> validationElementErrorHandler(SimpleStringAnswerIsEmptyException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(MultiOptionAnswerDoesNotContainAnySelectedOptionException.class)
+    ResponseEntity<?> validationElementErrorHandler(MultiOptionAnswerDoesNotContainAnySelectedOptionException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
 }
