@@ -7,6 +7,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.kuranov.pull.exception.NoSuchPullException;
+import ru.kuranov.pull.exception.NumberOfItemsInPullDoesNotMatchException;
 import ru.kuranov.pull.exception.PollWithThisIdIsNotActiveException;
 
 import java.util.NoSuchElementException;
@@ -31,6 +32,11 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     ResponseEntity<?> validationElementErrorHandler(HttpMessageNotReadableException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NumberOfItemsInPullDoesNotMatchException.class)
+    ResponseEntity<?> validationElementErrorHandler(NumberOfItemsInPullDoesNotMatchException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

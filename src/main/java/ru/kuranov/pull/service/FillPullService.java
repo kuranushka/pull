@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.kuranov.pull.dto.FillPullDto;
 import ru.kuranov.pull.entity.fill.FillPull;
 import ru.kuranov.pull.entity.main.Pull;
+import ru.kuranov.pull.exception.NumberOfItemsInPullDoesNotMatchException;
 import ru.kuranov.pull.mapper.FillPullMapper;
 import ru.kuranov.pull.repo.FillItemRepo;
 import ru.kuranov.pull.repo.FillPullRepo;
@@ -30,6 +31,10 @@ public class FillPullService {
 
         int pullItemsSize = pull.getItems().size();
         int fillPullItemsSize = fillPullDto.getFillItems().size();
+        boolean isEqualsItemCount = pullItemsSize == fillPullItemsSize;
+        if (!isEqualsItemCount) {
+            throw new NumberOfItemsInPullDoesNotMatchException();
+        }
         return pullItemsSize == fillPullItemsSize;
     }
 

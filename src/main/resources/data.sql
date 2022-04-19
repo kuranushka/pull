@@ -35,10 +35,12 @@ values (1, 'ADMIN');
 --        (2, 6);
 
 insert into item (question, type)
-values ('How many hours in a day?', 'SIMPLE_STRING');
+values ('How many hours in a day?', 'SINGLE_OPTION');
 
 insert into item_answer (item_id, answer_key, answer)
-values (1, '11 time zones', false);
+values (1, '9 time zones', false),
+       (1, '11 time zones', false),
+       (1, '15 time zones', false);
 
 insert into pull (begin_date, description, end_date, is_active)
 values (current_timestamp, 'Active Poll', '31-Dec-2022', true);
