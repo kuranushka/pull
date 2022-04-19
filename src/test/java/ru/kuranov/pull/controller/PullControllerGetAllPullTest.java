@@ -39,8 +39,8 @@ class PullControllerGetAllPullTest {
                 .andExpect(jsonPath("$[0].items").value(hasSize(3)))
 
                 .andExpect(jsonPath("$[0].id").value(2))
-                .andExpect(jsonPath("$[0].beginDate").value("2022.01.01"))
-                .andExpect(jsonPath("$[0].endDate").value("2022.12.31"))
+                .andExpect(jsonPath("$[0].beginDate").value("2022-01-01"))
+                .andExpect(jsonPath("$[0].endDate").value("2022-12-31"))
                 .andExpect(jsonPath("$[0].description").value("Active Poll"))
                 .andExpect(jsonPath("$[0].isActive").value("true"))
 
@@ -77,8 +77,8 @@ class PullControllerGetAllPullTest {
                 .andExpect(jsonPath("$[0].items").value(hasSize(3)))
 
                 .andExpect(jsonPath("$[0].id").value(1))
-                .andExpect(jsonPath("$[0].beginDate").value("2022.01.01"))
-                .andExpect(jsonPath("$[0].endDate").value("2022.12.31"))
+                .andExpect(jsonPath("$[0].beginDate").value("2022-01-01"))
+                .andExpect(jsonPath("$[0].endDate").value("2022-12-31"))
                 .andExpect(jsonPath("$[0].description").value("Not Active Poll"))
                 .andExpect(jsonPath("$[0].isActive").value("false"))
 
@@ -101,8 +101,8 @@ class PullControllerGetAllPullTest {
                 .andExpect(jsonPath("$[1].items").value(hasSize(3)))
 
                 .andExpect(jsonPath("$[1].id").value(2))
-                .andExpect(jsonPath("$[1].beginDate").value("2022.01.01"))
-                .andExpect(jsonPath("$[1].endDate").value("2022.12.31"))
+                .andExpect(jsonPath("$[1].beginDate").value("2022-01-01"))
+                .andExpect(jsonPath("$[1].endDate").value("2022-12-31"))
                 .andExpect(jsonPath("$[1].description").value("Active Poll"))
                 .andExpect(jsonPath("$[1].isActive").value("true"))
 
