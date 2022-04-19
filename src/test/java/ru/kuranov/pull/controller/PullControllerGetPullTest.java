@@ -34,7 +34,7 @@ class PullControllerGetPullTest {
         mockMvc.perform(get(baseUrl + "/1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(forwardedUrl(null))
                 .andExpect(redirectedUrl(null))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNotFound());
 
 
         mockMvc.perform(get(baseUrl + "/2").contentType(MediaType.APPLICATION_JSON))

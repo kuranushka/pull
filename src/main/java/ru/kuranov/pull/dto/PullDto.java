@@ -29,6 +29,7 @@ public class PullDto {
 
     private Boolean isActive;
 
+    @NotNull
     private List<Item> items;
 
 }
