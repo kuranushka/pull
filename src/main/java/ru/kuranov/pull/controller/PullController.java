@@ -116,7 +116,7 @@ public class PullController {
             @ApiResponse(responseCode = "404", description = "Опрос не найден", content = @Content),
             @ApiResponse(responseCode = "409", description = "Опрос не изменен, request не соответсвует формату", content = @Content)})
     @PutMapping("/fill/{pullSourceId}")
-    public ResponseEntity<?> fillPull(@Validated @RequestBody FillPullDto fillPullDto,
+    public ResponseEntity<?> fillPull(@RequestBody FillPullDto fillPullDto,
                                       @PathVariable("pullSourceId") Long pullSourceId,
                                       @RequestParam(name = "interviewerId") Long interviewerId) {
         if (!pullService.isActivePull(pullSourceId)) {

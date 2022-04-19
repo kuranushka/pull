@@ -30,33 +30,7 @@ public class FillPullService {
 
         int pullItemsSize = pull.getItems().size();
         int fillPullItemsSize = fillPullDto.getFillItems().size();
-        if (pullItemsSize != fillPullItemsSize) {
-            return false;
-        }
-
-        List<String> fillPullListQuestion = fillPullDto.getFillItems().stream()
-                .map(fillItem -> fillItem.getAnswer().keySet())
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
-
-
-        List<String> pullListQestion = pull.getItems().stream()
-                .map(item -> item.getAnswer().keySet())
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
-
-        List<String> fillPullTypeQuestion = fillPullDto.getFillItems().stream()
-                .map(item -> item.getType().name())
-                .collect(Collectors.toList());
-
-        List<String> pullTypeQuestion = pull.getItems().stream()
-                .map(item -> item.getType().name())
-                .collect(Collectors.toList());
-
-        return pullListQestion.containsAll(fillPullListQuestion) &&
-                pullTypeQuestion.containsAll(fillPullTypeQuestion) &&
-                fillPullListQuestion.containsAll(pullListQestion) &&
-                fillPullTypeQuestion.containsAll(pullTypeQuestion);
+        return pullItemsSize == fillPullItemsSize;
     }
 
     public void saveFilledPull(FillPullDto fillPullDto, Long pullSourceId, Long interviewerId) {
