@@ -135,7 +135,7 @@ class PullControllerFillPullTest {
                         .param("interviewerId", "1"))
                 .andExpect(forwardedUrl(null))
                 .andExpect(redirectedUrl(null))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNoContent());
     }
 
 
