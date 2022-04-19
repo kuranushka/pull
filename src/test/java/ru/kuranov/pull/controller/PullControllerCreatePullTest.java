@@ -90,8 +90,8 @@ class PullControllerCreatePullTest {
                 .andExpect(status().isOk())
 
                 .andExpect(jsonPath("$.id").value(3))
-                .andExpect(jsonPath("$.beginDate").value("01.01.2022"))
-                .andExpect(jsonPath("$.endDate").value("31.12.2022"))
+                .andExpect(jsonPath("$.beginDate").value("2022.01.01"))
+                .andExpect(jsonPath("$.endDate").value("2022.12.31"))
                 .andExpect(jsonPath("$.description").value("Three-question survey for tests"))
                 .andExpect(jsonPath("$.isActive").value(is(true)))
 

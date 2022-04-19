@@ -19,10 +19,10 @@ public class PullDto {
 
     private Long id;
 
-    @JsonFormat(pattern = "dd.MM.yyyy")
+    @JsonFormat(pattern = "yyyy.MM.dd")
     private LocalDate beginDate;
 
-    @JsonFormat(pattern = "dd.MM.yyyy")
+    @JsonFormat(pattern = "yyyy.MM.dd")
     private LocalDate endDate;
 
     private String description;

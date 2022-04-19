@@ -3,6 +3,7 @@ package ru.kuranov.pull.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.kuranov.pull.exception.NoSuchPullException;
@@ -25,6 +26,11 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(PollWithThisIdIsNotActiveException.class)
     ResponseEntity<?> validationElementErrorHandler(PollWithThisIdIsNotActiveException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    ResponseEntity<?> validationElementErrorHandler(HttpMessageNotReadableException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 }
