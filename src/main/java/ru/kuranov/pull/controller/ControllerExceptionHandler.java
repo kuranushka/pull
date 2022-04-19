@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.kuranov.pull.exception.NoSuchPullException;
+import ru.kuranov.pull.exception.PollWithThisIdIsNotActiveException;
 
 import java.util.NoSuchElementException;
 
@@ -19,6 +20,11 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(NoSuchPullException.class)
     ResponseEntity<?> validationElementErrorHandler(NoSuchPullException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(PollWithThisIdIsNotActiveException.class)
+    ResponseEntity<?> validationElementErrorHandler(PollWithThisIdIsNotActiveException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

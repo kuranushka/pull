@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.kuranov.pull.dto.FillPullDto;
 import ru.kuranov.pull.dto.PullDto;
+import ru.kuranov.pull.exception.PollWithThisIdIsNotActiveException;
 import ru.kuranov.pull.service.FillPullService;
 import ru.kuranov.pull.service.PullService;
 
@@ -49,8 +50,12 @@ public class PullController {
     public ResponseEntity<?> getPull(Principal principal,
                                      @PathVariable("id") Long id) {
         PullDto pullDto = pullService.findById(id);
-        if (principal == null && !pullDto.getIsActive()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        if (principal == null) {
+            if (!pullDto.getIsActive()) {
+                throw new PollWithThisIdIsNotActiveException();
+            } else {
+                return new ResponseEntity<>(pullDto, HttpStatus.OK);
+            }
         }
         return new ResponseEntity<>(pullDto, HttpStatus.OK);
     }
@@ -128,7 +133,7 @@ public class PullController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Список всех опросов пользователя", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = FillPullDto.class))})})
     @GetMapping("/interviewer/{interviewerId}/fill-pull")
-    public ResponseEntity<List<FillPullDto>> getAllFilledPull(@PathVariable("interviewerId") Long interviewerId) {
+    public ResponseEntity<Collection<FillPullDto>> getAllFilledPull(@PathVariable("interviewerId") Long interviewerId) {
         List<FillPullDto> fillPullDtoList = fillPullService.findAllByInterviewerId(interviewerId);
         if (fillPullDtoList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
