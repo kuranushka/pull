@@ -18,6 +18,8 @@ REST сервис опросов
 
 Документация по адресу **http://localhost:8080/docs.html**
 
+Логин администратора - admin, пароль - admin
+
 Андрей Куранов 
 - telegram: https://t.me/AndreyKuranov
 - kuranov.andrey@gmail.com
