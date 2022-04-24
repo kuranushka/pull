@@ -1,8 +1,65 @@
-drop table if exists pull, item, fill_item, fill_item_answer,
-    fill_pull, fill_pull_fill_items, pull_items, item_answer,
-    usr, user_roles cascade;
+drop schema public cascade;
+create schema public;
 
-create table pull
+create table answer
+(
+    id       bigserial primary key,
+    question varchar(255),
+    type     varchar(255)
+);
+
+create table answer_answer_options
+(
+    answer_id      bigint not null
+        constraint fk_answer_answer_options
+            references answer,
+    answer_options varchar(255)
+);
+
+
+create table fill_survey
+(
+    id               bigserial primary key,
+    begin_date       date,
+    description      varchar(255),
+    end_date         date,
+    interviewer_id   bigint,
+    source_survey_id bigint
+);
+
+
+create table fill_survey_answers
+(
+    filled_survey_id bigint not null
+        constraint fk_fill_survey_answers_filled_survey_id
+            references fill_survey,
+    answers_id       bigint not null
+        constraint fk_fill_survey_answers_answers_id
+            references answer
+);
+
+
+
+create table question
+(
+    id       bigserial primary key,
+    question varchar(255),
+    type     varchar(255)
+);
+
+
+
+create table question_answer_options
+(
+    question_id    bigint not null
+        constraint fk_question_answer_options
+            references question,
+    answer_options varchar(255)
+);
+
+
+
+create table survey
 (
     id          bigserial primary key,
     begin_date  date,
@@ -11,75 +68,19 @@ create table pull
     is_active   boolean
 );
 
-create table fill_pull
+
+
+create table survey_questions
 (
-    id             bigserial primary key,
-    begin_date     date,
-    description    varchar(255),
-    end_date       date,
-    interviewer_id bigint,
-    source_pull_id bigint
+    survey_id    bigint not null
+        constraint fk_survey_questions_survey_id
+            references survey,
+    questions_id bigint not null
+        constraint fk_survey_questions_questions_id
+            references question
 );
 
 
-create table item
-(
-    id       bigserial primary key,
-    question varchar(255),
-    type     varchar(255)
-);
-
-create table fill_item
-(
-    id       bigserial primary key,
-    question varchar(255),
-    type     varchar(255)
-);
-
-create table fill_item_answer
-(
-    fill_item_id bigint       not null
-        constraint fk_fill_item_answer
-            references fill_item,
-    answer       boolean,
-    answer_key   varchar(255) not null,
-    primary key (fill_item_id, answer_key)
-);
-
-create table fill_pull_fill_items
-(
-    fill_pull_id  bigint not null
-        constraint fk_fill_pull_fill_items_fill_pull_id
-            references fill_pull,
-    fill_items_id bigint not null
-        constraint uk_fill_pull_fill_items_fill_items_id
-            unique
-        constraint fk_fill_pull_fill_items_fill_items_id
-            references fill_item
-);
-
-
-create table pull_items
-(
-    pull_id  bigint not null
-        constraint fk_pull_items_pull_id
-            references pull,
-    items_id bigint not null
-        constraint uk_pull_items_items_id
-            unique
-        constraint fk_pull_items_items_id
-            references item
-);
-
-create table item_answer
-(
-    item_id    bigint       not null
-        constraint fk_item_answer_item_id
-            references item,
-    answer     boolean,
-    answer_key varchar(255) not null,
-    primary key (item_id, answer_key)
-);
 
 create table usr
 (
@@ -89,10 +90,14 @@ create table usr
     user_name varchar(255)
 );
 
+
+
 create table user_roles
 (
     user_id bigint not null
-        constraint fk_user_roles_user_id
+        constraint fk_user_roles
             references usr,
     roles   varchar(255)
 );
+
+

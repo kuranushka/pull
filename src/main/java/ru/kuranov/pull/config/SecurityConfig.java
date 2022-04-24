@@ -7,9 +7,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import ru.kuranov.pull.service.UserService;
 
 
@@ -24,7 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests(
                 (requests) -> {
-                    requests.antMatchers(HttpMethod.PUT, "/api/v1/pulls/{id}").hasAuthority("ADMIN");
+                    requests.antMatchers(HttpMethod.PUT, "/api/v1/surveys/{id}").hasAuthority("ADMIN");
                     requests.antMatchers(HttpMethod.DELETE, "/**").hasAuthority("ADMIN");
                     requests.antMatchers(HttpMethod.POST, "/**").hasAuthority("ADMIN");
                     requests.antMatchers("/**").permitAll();

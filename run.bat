@@ -1,3 +1,3 @@
-echo "Compile and running pull service ..."
+echo "Compile and running survey service ..."
 cd src\main\resources\dockerDB\
-docker build --tag pull-db . & cd ../ & cd ../ & cd ../ & cd ../ & mvnw.cmd clean install & docker build --tag pull . &docker-compose up
+docker build --tag survey-db . & cd ../ & cd ../ & cd ../ & cd ../ & mvnw.cmd clean install & docker build --tag survey . & docker-compose up

@@ -1,23 +1,23 @@
 version: '3.3'
 services:
-  pull:
-    container_name: pull
-    hostname: pull
-    image: pull
+  survey:
+    container_name: survey
+    hostname: survey
+    image: survey
     ports:
-      - 8080:8080
-    entrypoint: ["java", "-jar", "pull-0.0.1-SNAPSHOT.jar"]
+      - 8111:8111
+    entrypoint: [ "java", "-jar", "survey-0.0.1-SNAPSHOT.jar" ]
     expose:
-      - 8080
+      - 8111
     environment:
-      - spring.datasource.url=jdbc:postgresql://pull-db:5432/pull
+      - spring.datasource.url=jdbc:postgresql://survey-db:5432/survey
     restart: always
     links:
-      - pull-db
-  pull-db:
-    container_name: pull-db
-    hostname: pull-db
-    image: pull-db
+      - survey-db
+  survey-db:
+    container_name: survey-db
+    hostname: survey-db
+    image: survey-db
     ports:
       - 5432:5432
     expose:
@@ -25,5 +25,5 @@ services:
     environment:
       - POSTGRES_PASSWORD=root
       - POSTGRES_USER=postgres
-      - POSTGRES_DB=pull
+      - POSTGRES_DB=survey
     restart: always
