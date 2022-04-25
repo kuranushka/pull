@@ -13,7 +13,7 @@ REST сервис опросов
 
 Сервис доступен по адресу **http://localhost:8111/api/v1/surveys/**
 
-Документация по адресу **localhost:8111/swagger-ui.html**
+Документация по адресу **http://localhost:8111/swagger-ui.html**
 
 Андрей Куранов
 
